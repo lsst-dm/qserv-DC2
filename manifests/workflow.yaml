@@ -30,7 +30,7 @@ spec:
             name: config-data-url
             key: DATA_URL
       image: "{{workflow.parameters.image}}"
-      imagePullPolicy: Always
+      imagePullPolicy: IfNotPresent 
       volumeMounts:
         - name: repl-creds
           mountPath: /home/qserv/.lsst
@@ -61,7 +61,7 @@ spec:
                       name: config-data-url
                       key: DATA_URL
                 image: {{workflow.parameters.image}}
-                imagePullPolicy: Always
+                imagePullPolicy: IfNotPresent 
                 volumeMounts:
                   - name: repl-creds
                     mountPath: /home/qserv/.lsst
