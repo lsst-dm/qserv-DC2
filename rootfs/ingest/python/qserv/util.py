@@ -47,7 +47,8 @@ import requests
 _LOG = logging.getLogger(__name__)
 
 def get_default_logger(verbose):
-    """Check if a file exists on a remote HTTP server
+    """
+    Create and returns default logger
     """
     logger = logging.getLogger()
     if verbose:
@@ -71,7 +72,7 @@ def http_file_exists(base_url, filename):
 def json_get(base_url, filename):
     """Load json file at a given URL
     """
-    str_url = urllib.parse.urljoin(base_url, filename)
+    str_url = urllib.parse.urljoin(trailing_slash(base_url), filename)
     url = urllib.parse.urlsplit(str_url, scheme="file")
     if url.scheme in ["http", "https"]:
         r = requests.get(str_url)
@@ -142,4 +143,4 @@ class FelisAction(argparse.Action):
 def increase_wait_time(wait_sec):
     if wait_sec < 10:
         wait_sec *= 2
-        
+

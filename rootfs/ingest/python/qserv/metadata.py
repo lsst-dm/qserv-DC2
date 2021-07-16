@@ -58,11 +58,11 @@ class ChunkMetadata():
     """Manage metadata related to data to ingest (database, tables and chunk files)
     """
 
-    def __init__(self, data_url, servers_file = None):
+    def __init__(self, input):
         """Download metadata located at 'data_url' and describing database, tables
            and chunks files, and then load it in a dictionnary.
         """
-        self.data_url = trailing_slash(data_url)
+        self.data_url = urllib.parse.urljoin(input.servers[0],input.path)
 
         self.metadata = json_get(self.data_url, _METADATA_FILENAME)
         _LOG.debug("Metadata: %s", self.metadata)
@@ -71,10 +71,8 @@ class ChunkMetadata():
         url = urllib.parse.urlsplit(self.data_url, scheme="file")
         self.url_path = url.path
         self.http_servers = []
-        if servers_file and url.scheme in ["http", "https"]:
-            with open(servers_file, "r") as f:
-                data = json.load(f)
-                self.http_servers = data['http_servers']
+        if url.scheme in ["http", "https"]:
+            self.http_servers = input.servers['http_servers']
 
         filename = self.metadata['database']
         self.json_db = json_get(self.data_url, filename)
@@ -98,7 +96,7 @@ class ChunkMetadata():
                     if _is_director(table):
                         files_info.append((path, d[_CHUNK], True, _get_name(table)))
         return files_info
-    
+
     def get_loadbalancer_url(self, i):
         http_servers_count = len(self.http_servers)
         if http_servers_count == 0:
