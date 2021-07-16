@@ -3,8 +3,5 @@
 # Ask Qserv replication system to register a Qserv database, prior to data ingestion
 set -euxo pipefail
 
-DIR=$(cd "$(dirname "$0")"; pwd -P)
-. "$DIR"/env.sh
-
 # Register database and tables
-replctl-register -v "$REPL_URL" "$DATA_URL"
+replctl-register -v

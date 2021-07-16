@@ -88,15 +88,15 @@ class Ingester():
     """ Manage chunk ingestion tasks
     """
 
-    def __init__(self, data_url, repl_url, queue_url=None, servers_file=None):
+    def __init__(self, chunk_meta, replication_url, queue_url=None):
         """ Retrieve chunk metadata and connection to concurrent queue manager
         """
 
-        self.repl_client = ReplicationClient(repl_url)
+        self.repl_client = ReplicationClient(replication_url)
 
         self.http = Http()
 
-        self.chunk_meta = ChunkMetadata(data_url, servers_file)
+        self.chunk_meta = chunk_meta
         if queue_url is not None:
             self.queue_manager = QueueManager(queue_url, self.chunk_meta)
 

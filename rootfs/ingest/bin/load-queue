@@ -43,16 +43,13 @@ import qserv.util as util
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Load Qserv ingest database with input chunk files (i.e. contributions)")
 
-    parser.add_argument('--config', help="Configuration file *.yaml", type=argparse.FileType('r'), default="/config/ingest.yaml")
+    parser.add_argument('--config', help="Configuration file for ingest client", type=argparse.FileType('r'),
+                        default="/config/ingest.yaml", action=util.IngestConfigAction)
     parser.add_argument("--verbose", "-v", action="store_true", help="Use debug logging")
 
     args = parser.parse_args()
 
     logger = util.get_default_logger(args.verbose)
-    opt = yaml.load(args.config, Loader=yaml.FullLoader)
-    servers = opt['ingest']['input']['servers']
-    path = opt['ingest']['input']['path']
-    queue_url = opt['ingest']['qserv']['queue_url']
-    chunk_meta = ChunkMetadata(path, servers)
-    queue_manager = QueueManager(queue_url, chunk_meta)
+    chunk_meta = ChunkMetadata(args.config.path, args.config.servers)
+    queue_manager = QueueManager(args.config.queue_url, chunk_meta)
     queue_manager.load()

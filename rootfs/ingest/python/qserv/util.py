@@ -30,6 +30,7 @@ Tools used by ingest algorithm
 #  Imports of standard modules --
 # -------------------------------
 import argparse
+import io
 import json
 import logging
 import os
@@ -89,18 +90,41 @@ def trailing_slash(url):
         url += '/'
     return url
 
+class IngestConfig:
+    """
+    Configuration parameter for ingest client
+    """
+    def __init__(self, yaml: str):
+        self.servers = yaml['ingest']['input']['servers']
+        self.path = yaml['ingest']['input']['path']
+        self.data_url = yaml['ingest']['qserv']['queue_url']
+        self.queue_url = yaml['ingest']['qserv']['queue_url']
+        self.replication_url = yaml['ingest']['qserv']['replication_url']
+
+class IngestConfigAction(argparse.Action):
+    """
+    Argparse action to read an ingest client configuration file
+    """
+    def __call__(self, parser, namespace, values: io.TextIOWrapper, option_string):
+        try:
+            yaml_data = yaml.safe_load(values)
+            config = IngestConfig(yaml_data)
+        finally:
+            values.close()
+        setattr(namespace, self.dest, config)
 
 class BaseUrlAction(argparse.Action):
-    """Add trailing slash to url
+    """
+    Add trailing slash to url
     """
     def __call__(self, parser, namespace, values, option_string):
         x = trailing_slash(values)
         setattr(namespace, self.dest, x)
 
-
-class DataAction(argparse.Action):
-    """argparse action to attempt casting the values to floats and put into a dict"""
-
+class DictAction(argparse.Action):
+    """
+    Argparse action to attempt casting the values to floats and put into a dict
+    """
     def __call__(self, parser, namespace, values, option_string):
         d = dict()
         for item in values:
@@ -122,8 +146,9 @@ class JsonAction(argparse.Action):
 
 
 class FelisAction(argparse.Action):
-    """argparse action to read a felis file into namespace"""
-
+    """
+    Argparse action to read a felis file into namespace
+    """
     def __call__(self, parser, namespace, values, option_string):
         with open(values, "r") as f:
             tables = yaml.safe_load(f)["tables"]
