@@ -1,11 +1,8 @@
 #!/bin/sh
 
-# Ask Qserv replication system to publish a Qserv database
+# Publish a Qserv database, using Qserv replication system
 
 set -euxo pipefail
-
-DIR=$(cd "$(dirname "$0")"; pwd -P)
-. "$DIR"/env.sh
 
 usage() {
   cat << EOD
@@ -38,6 +35,4 @@ if [ $# -ne 0 ] ; then
 fi
 
 # Publish database
-replctl-publish -v "$DATA_URL" \
-    "$REPL_URL"
-
+replctl-publish -v

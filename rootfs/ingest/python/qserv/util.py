@@ -98,6 +98,7 @@ class IngestConfig:
         self.servers = yaml['ingest']['input']['servers']
         self.path = yaml['ingest']['input']['path']
         self.data_url = yaml['ingest']['qserv']['queue_url']
+        self.query_url = yaml['ingest']['qserv']['query_url']
         self.queue_url = yaml['ingest']['qserv']['queue_url']
         self.replication_url = yaml['ingest']['qserv']['replication_url']
 
