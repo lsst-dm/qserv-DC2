@@ -85,11 +85,13 @@ class IngestArgs():
         return self.__dict__
 
 class Ingester():
-    """ Manage chunk ingestion tasks
+    """
+    Manage chunk ingestion tasks
     """
 
     def __init__(self, chunk_meta, replication_url, queue_url=None):
-        """ Retrieve chunk metadata and connection to concurrent queue manager
+        """
+        Retrieve chunk metadata and connection to concurrent queue manager
         """
 
         self.repl_client = ReplicationClient(replication_url)
