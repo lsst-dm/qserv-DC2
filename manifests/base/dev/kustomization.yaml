@@ -6,9 +6,9 @@ resources:
 - dev.yaml
 
 configMapGenerator:
-- name: config-ingest
-  files:
+- files:
   - ingest.yaml
+  name: config-ingest
 generatorOptions:
   disableNameSuffixHash: true
   labels:
@@ -18,4 +18,4 @@ kind: Kustomization
 images:
 - name: INGEST_IMAGE
   newName: qserv/ingest
-  newTag: 2021.6.4-rc1-6-g8779a38-dirty
+  newTag: 2021.6.4-rc1-7-gf51f2c6-dirty

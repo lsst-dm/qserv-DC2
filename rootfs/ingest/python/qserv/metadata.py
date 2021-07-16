@@ -31,6 +31,7 @@ Manage metadata related to input data
 # -------------------------------
 import json
 import logging
+from typing import List
 import urllib.parse
 
 # ----------------------------
@@ -58,11 +59,11 @@ class ChunkMetadata():
     """Manage metadata related to data to ingest (database, tables and chunk files)
     """
 
-    def __init__(self, input):
+    def __init__(self, path: str, servers: List[str]):
         """Download metadata located at 'data_url' and describing database, tables
            and chunks files, and then load it in a dictionnary.
         """
-        self.data_url = urllib.parse.urljoin(input.servers[0],input.path)
+        self.data_url = urllib.parse.urljoin(servers[0], path)
 
         self.metadata = json_get(self.data_url, _METADATA_FILENAME)
         _LOG.debug("Metadata: %s", self.metadata)
@@ -72,7 +73,7 @@ class ChunkMetadata():
         self.url_path = url.path
         self.http_servers = []
         if url.scheme in ["http", "https"]:
-            self.http_servers = input.servers['http_servers']
+            self.http_servers = servers
 
         filename = self.metadata['database']
         self.json_db = json_get(self.data_url, filename)
