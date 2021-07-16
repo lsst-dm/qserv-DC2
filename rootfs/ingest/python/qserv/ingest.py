@@ -89,18 +89,15 @@ class Ingester():
     Manage chunk ingestion tasks
     """
 
-    def __init__(self, chunk_meta, replication_url, queue_url=None):
+    def __init__(self, chunk_metadata: ChunkMetadata, replication_url: str, queue_manager: QueueManager=None):
         """
         Retrieve chunk metadata and connection to concurrent queue manager
         """
-
+        self.chunk_meta = chunk_metadata
+        self.queue_manager = queue_manager
+        self.http = Http()
         self.repl_client = ReplicationClient(replication_url)
 
-        self.http = Http()
-
-        self.chunk_meta = chunk_meta
-        if queue_url is not None:
-            self.queue_manager = QueueManager(queue_url, self.chunk_meta)
 
     def check_supertransactions_success(self):
         """ Check all super-transactions have ran successfully

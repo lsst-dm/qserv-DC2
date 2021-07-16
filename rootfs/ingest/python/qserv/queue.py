@@ -37,7 +37,7 @@ import time
 # ----------------------------
 # Imports for other modules --
 # ----------------------------
-from qserv.metadata import ChunkMetadata
+from .metadata import ChunkMetadata
 import sqlalchemy
 from sqlalchemy import MetaData, Table
 from sqlalchemy.engine.url import make_url

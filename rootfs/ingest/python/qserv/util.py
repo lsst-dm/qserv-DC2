@@ -168,4 +168,5 @@ class FelisAction(argparse.Action):
 def increase_wait_time(wait_sec):
     if wait_sec < 10:
         wait_sec *= 2
+    return wait_sec
 

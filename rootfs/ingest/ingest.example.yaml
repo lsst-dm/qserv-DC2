@@ -7,7 +7,7 @@ ingest:
         servers:
             - http://dataserver
             - http://dataserver
-        path: DC2-errors/
+        path: DC2/
     qserv:
         # Override the default value stored in input metadata
         # 1: build secondary index after each transaction

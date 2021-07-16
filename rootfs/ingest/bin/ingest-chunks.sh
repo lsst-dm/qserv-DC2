@@ -21,7 +21,6 @@ Usage: `basename $0` [options] chunk_queue_fraction
   Launch an ingest process, running sequentially super-transactions,
   stop when no more chunk file remains in chunk queue,
   ingest chunk_queue_size/chunk_queue_fraction chunk files per super-transaction
-  Use \$DATA_URL to access input data.
 
 EOD
 }
@@ -48,14 +47,5 @@ fi
 
 chunk_queue_fraction=$1
 
-servers_opt=''
-if [ -e /config-data-url/servers.json ]; then
-    servers_opt="-s /config-data-url/servers.json"
-fi
-
 replctl-ingest --verbose \
-    --chunk-queue-fraction "$chunk_queue_fraction" \
-    "$DATA_URL" \
-    "$QUEUE_URL" \
-    "$REPL_URL" \
-    $servers_opt
+    --chunk-queue-fraction "$chunk_queue_fraction"
